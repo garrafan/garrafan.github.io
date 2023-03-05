@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Tilt+Warp&display=swap" rel="stylesheet">
+    <title></title>
+    <script>
+      function precise_round(num, decimals) {
+        var t = Math.pow(10, decimals);
+        return (
+          Math.round(
+            num * t +
+              (decimals > 0 ? 1 : 0) *
+                (Math.sign(num) * (10 / Math.pow(100, decimals)))
+          ) / t
+        ).toFixed(decimals);
+      }
+      function singletax() {
+        var yearly = parseInt(document.getElementById("salary").value);
+        var deduct = parseInt(document.getElementById("deductions").value);
+        yearly = yearly - deduct;
+        yearly = yearly - checkOld();
+        yearly = yearly - checkYoung();
+        var fin = 0;
+        if (yearly > 11000) {
+          fin = fin + 11000 * 0.9;
+          yearly = yearly - 11000;
+        } else {
+          fin = fin + yearly * 0.9;
+          return fin;
+        }
+        if (yearly > 44725) {
+          fin = fin + 44725 * 0.88;
+          yearly = yearly - 44725;
+        } else {
+          fin = fin + yearly * 0.88;
+          return fin;
+        }
+        if (yearly > 95375) {
+          fin = fin + 95375 * 0.78;
+          yearly = yearly - 95375;
+        } else {
+          fin = fin + yearly * 0.78;
+          return fin;
+        }
+        if (yearly > 182100) {
+          fin = fin + 182100 * 0.76;
+          yearly = yearly - 182100;
+        } else {
+          fin = fin + yearly * 0.76;
+          return fin;
+        }
+        if (yearly > 231250) {
+          fin = fin + 231250 * 0.68;
+          yearly = yearly - 231250;
+        } else {
+          fin = fin + yearly * 0.68;
+          return fin;
+        }
+        if (yearly > 578125) {
+          fin = fin + 578125 * 0.65;
+          yearly = yearly - 578125;
+        } else {
+          fin = fin + yearly * 0.65;
+          return fin;
+        }
+        if (yearly > 578125) {
+          fin = fin + yearly * 0.63;
+          return fin;
+        } else {
+            fin = fin + yearly * 0.63;
+            return fin;
+        }
+      }
+
+
+      function Marriedtax() {
+        var yearly = parseInt(document.getElementById("salary").value);
+        var deduct = parseInt(document.getElementById("deductions").value);
+        yearly = yearly - deduct;
+        yearly = yearly - checkOld();
+        yearly = yearly - checkYoung();
+        var fin = 0;
+        if (yearly > 22000) {
+          fin = fin + 22000 * 0.9;
+          yearly = yearly - 22000;
+        } else {
+          fin = fin + yearly * 0.9;
+          return fin;
+        }
+        if (yearly > 89450) {
+          fin = fin + 89450 * 0.88;
+          yearly = yearly - 89450;
+        } else {
+          fin = fin + yearly * 0.88;
+          return fin;
+        }
+        if (yearly > 190750) {
+          fin = fin + 190750 * 0.78;
+          yearly = yearly - 190750;
+        } else {
+          fin = fin + yearly * 0.78;
+          return fin;
+        }
+        if (yearly > 364200) {
+          fin = fin + 364200 * 0.76;
+          yearly = yearly - 364200;
+        } else {
+          fin = fin + yearly * 0.76;
+          return fin;
+        }
+        if (yearly > 462500) {
+          fin = fin + 462500 * 0.68;
+          yearly = yearly - 462500;
+        } else {
+          fin = fin + yearly * 0.68;
+          return fin;
+        }
+        if (yearly > 693750) {
+          fin = fin + 693750 * 0.65;
+          yearly = yearly - 693750;
+        } else {
+          fin = fin + yearly * 0.65;
+          return fin;
+        }
+        if (yearly > 693750) {
+          fin = fin + yearly * 0.63;
+          return fin;
+        } else {
+            fin = fin + yearly * 0.63;
+            return fin;
+        }
+      }
+      function checkYoung() {
+        var youngPeople = parseInt(document.getElementById("minors").value);
+        return youngPeople * 2000;
+      }
+      function checkOld() {
+        var oldPeople = parseInt(document.getElementById("majors").value);
+        return oldPeople * 500;
+      }
+      function checkfilingstatus() {
+        var a = document.getElementById("fil").value;
+        if (a == "singles") {
+          var temp = singletax();
+          return temp;
+        } 
+        if (a == "marrieds") {
+            var x = Marriedtax();
+          return x;
+        }
+      }
+      function checkCalculate() {
+        var final = checkfilingstatus();
+        var federalTax = parseInt(document.getElementById("salary").value) - final;
+        var rent = parseInt(document.getElementById("rent").value);
+        final = final + checkOld();
+        final = final + checkYoung();
+        final = final + parseInt(document.getElementById("deductions").value);
+        var yearlyStateTax = parseInt(document.getElementById("salary").value) - (statetax() * 12);
+        final = final - yearlyStateTax;
+        final = final - rent;
+
+        
+        document.getElementById("sTax").innerHTML = "Your state tax is $" + precise_round(yearlyStateTax, 2);
+        document.getElementById("fTax").innerHTML = "Your federal tax is $" + precise_round(federalTax, 2);
+        document.getElementById("tTax").innerHTML = "Your total income after tax is $" + precise_round(final, 2);
+        var trans = final * 0.16;
+        document.getElementById("trans").innerHTML = "$" + precise_round(trans, 2);
+        document.getElementById("ins").innerHTML = "$" + precise_round((final * 0.12)/12, 2);
+        document.getElementById("food").innerHTML = "$" + precise_round((final * 0.12)/12, 2);
+        document.getElementById("health").innerHTML = "$" + precise_round((final * 0.08)/12, 2);
+        document.getElementById("enter").innerHTML = "$" + precise_round((final * 0.05)/12, 2);
+        document.getElementById("educ").innerHTML = "$" + precise_round((final * 0.02)/12, 2);
+        document.getElementById("apparel").innerHTML = "$" + precise_round((final * 0.02)/12, 2);
+        document.getElementById("personal").innerHTML = "$" + precise_round((final * 0.01)/12, 2);
+        document.getElementById("other").innerHTML = "$" + precise_round((final * 0.03)/12, 2);
+        document.getElementById("save").innerHTML = "$" + precise_round((final * 0.2)/12, 2);
+      }
+      function statetax() {
+        var yearly = parseInt(document.getElementById("salary").value);
+        var fin = 0;
+        var y = yearly/12
+        if (y > 3000) {
+          fin = fin + 3000 * 0.98;
+          y = y - 3000;
+        } else {
+          fin = fin + y * 0.98;
+          return fin;
+        }
+        if (y > 5000) {
+          fin = fin + 5000 * 0.97;
+          y = y - 5000;
+        } else {
+          fin = fin + y * 0.97;
+          return fin;
+        }
+        if (y > 17000) {
+          fin = fin + 17000 * 0.95;
+          y = y - 17000;
+        } else {
+          fin = fin + y * 0.95;
+          return fin;
+        }
+        if (yearly > 17000) {
+          fin = fin + y * 0.9425;
+          return fin;
+        } else {
+            fin = fin + y * 0.9425;
+            return fin;
+      }
+    }
+    </script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>RAAB Financials</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="inner_header">
+        <div class="logocontainer">
+          <img src="logo.png" class="logo" />
+        </div>
+      </div>
+    </div>
+    <div class="inner_header"></div>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <h2 class="box">We alleviate you of your financial struggles</h2>
+    <div class="formbox">
+        <br>
+        <p>
+        </p>
+
+      <form class = "submission">
+        Filing status:
+        <select name="file" id="fil">
+          <option></option>
+          <option value="singles" id="a">Single</option>
+          <option value="marrieds" id="b">Joint Account With Spouse</option>
+        </select> <br>
+        <br/>
+        <p>
+        </p>
+        Insert annual household income: <input type="number" id="salary" placeholder = " Annual Income"/> <br />
+        <p><br>
+        </p>
+        Insert annual rent cost: <input type="number" id="rent" placeholder = " Rent Cost"/> <br />
+        <p><br>
+        </p>
+        Insert amount of money given to charity or any other deductions: <input type="number" id="deductions" placeholder = " Charity"/> <br />
+        <p><br>
+        </p>
+        How many minors do you support (less than 18)
+        <input class = minors type="number" id="minors" placeholder = " Amount of Minors"/>    
+        <p><br>
+        </p>
+        How many people do you support (18 or older)
+        <input class = majors type="number" id="majors" placeholder = " Amount of people" />
+        <p><br>
+        </p>
+        <input class ="btn" type="button" value="Calculate" onclick="checkCalculate()"/>
+        <p><br>
+        </p>
+      </form>
+    </div>
+    <p id = sTax>
+    </p>
+    <p id = fTax>
+    </p>
+    <p id = tTax>
+    </p>
+    <table class = "table">
+       <thead>
+        <tr>
+         <th>Transportation</th>
+         <th>Insurance</th>
+         <th>Food</th>
+         <th>HealthCare</th>
+         <th>Entertainment</th>
+         <th>Education</th>
+         <th>Apparel and Service</th>
+         <th>Personal Care Products</th>
+         <th>Other Expenses</th>
+         <th>Savings</td>
+       </tr>
+      </thead>
+       <tbody>
+        <tr>
+         <td id = trans></td>
+         <td id = ins></td>
+         <td id = food></td>
+         <td id = health></td>
+         <td id = enter></td>
+         <td id = educ></td>
+         <td id = apparel></td>
+         <td id = personal></td>
+         <td id = other></td>
+         <td id = save></td>
+
+       </tr>
+    </tbody>
+    </div>
+  </body>
+</html>
